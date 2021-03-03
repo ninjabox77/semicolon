@@ -75,10 +75,6 @@ public class Lexer {
             return '\0';
         return src.charAt(pointer);
     }
-    
-    private char prev() {
-        return src.charAt(pointer - 1);
-    }
 
     private char next() {
         char ch = src.charAt(pointer++);

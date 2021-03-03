@@ -59,11 +59,10 @@ public class Parr {
     //   rows     : '!' header
     //   header   : ID+ '(' DIGIT '-' DIGIT ') lines+
     //   lines    : ID '=' '\'? messages
-    //   messages : message ('\' messages)*
-    //   message  : TEXT
-    //   ID       : ('A'..'Z''a'..'z')('A'..'Z''a'..'z'0-9_)*
-    //   DIGIT    : (0..9)+
-    //   TEXT     : ..
+    //   messages : TEXT ('\' messages)*
+    //   ID       : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|' ')+
+    //   DIGIT    : ('0'..'9')+
+    //   TEXT     : [a-zA-Z0-9 @:._/,%{}-]+
     // ----------------------------------------------------------------------
     
     public Compilation file() {
