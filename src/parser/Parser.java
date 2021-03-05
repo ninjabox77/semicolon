@@ -39,10 +39,8 @@ public class Parser {
 
     private boolean match(Integer... types) {
         for (Integer type : types) {
-            if (check(type)) {
-                //next();
+            if (check(type))
                 return true;
-            }
         }
         return false;
     }
@@ -84,7 +82,7 @@ public class Parser {
     
     public Header header() {
         if (!match(Type.MESSAGE)) {
-            System.out.println("[header] Expecting MESSAGE, found '" + peek().lexeme + " '@line " + peek().line);
+            System.out.println("[header]: Expecting MESSAGE, found '" + peek().lexeme + " '@line " + peek().line);
             System.exit(1);
         }
         Value key = new Value(next());
@@ -96,16 +94,16 @@ public class Parser {
     
     public Line lines() {
         if (!match(Type.ID)) {
-            System.err.println("[lines] Expecting ID, found '" + peek().lexeme + "' @line " + peek().line);
+            System.err.println("[lines]: Expecting ID, found '" + peek().lexeme + "' @line " + peek().line);
             System.exit(1);
         }
         Value id = new Value(next());
-        consume(Type.EQUALS, "[lines] Expecting '=', found '" + peek().lexeme + "' @line " + peek().line);
+        consume(Type.EQUALS, "[lines]: Expecting '=', found '" + peek().lexeme + "' @line " + peek().line);
         if (match(Type.BACKSLASH))
             next();
         Sequence<Value> se = new Sequence<>();
         if (!match(Type.MESSAGE)) {
-            System.err.println("[lines] Expecting MESSAGE, found '" + peek().lexeme + "' @line " + peek().line);
+            System.err.println("[lines]: Expecting MESSAGE, found '" + peek().lexeme + "' @line " + peek().line);
             System.exit(1);
         }
         se.append(new Value(next()));
