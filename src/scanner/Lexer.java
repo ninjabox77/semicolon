@@ -99,7 +99,7 @@ public class Lexer {
                 next();
             break;
             
-        case '!': addToken(Type.BANG); break;
+        case '!': addToken(Type.BANG); consume = true; break;
         case '(': addToken(Type.LPAREN); break;
         case ')': addToken(Type.RPAREN); break;
         case '=': addToken(Type.EQUALS); consume = true; break;

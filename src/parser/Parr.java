@@ -57,10 +57,10 @@ public class Parr {
     // GRAMMAR:
     //   file     : rows+
     //   rows     : '!' header
-    //   header   : ID+ '(' DIGIT '-' DIGIT ') lines+
+    //   header   : TEXT lines+
     //   lines    : ID '=' '\'? messages
     //   messages : TEXT ('\' messages)*
-    //   ID       : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|' ')+
+    //   ID       : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')+
     //   DIGIT    : ('0'..'9')+
     //   TEXT     : [a-zA-Z0-9 @:._/,%{}-]+
     // ----------------------------------------------------------------------
@@ -83,25 +83,15 @@ public class Parr {
     }
     
     public Header header() {
-        Sequence<Value> ids = new Sequence<>();
-        if (!match(Type.ID)) {
-            System.err.println("[header] !!Expecting ID, found '" + peek().lexeme + "' @line " + peek().line);
+        if (!match(Type.MESSAGE)) {
+            System.out.println("[header] Expecting MESSAGE, found '" + peek().lexeme + " '@line " + peek().line);
             System.exit(1);
         }
-        ids.append(new Value(next()));
-        while (match(Type.ID)) {
-            ids.append(new Value(next()));
-        }
-        consume(Type.LPAREN, "[header] Expecting '(', found '" + peek().lexeme + "' @line " + peek().line);
-        Literal left = new Literal(next());
-        consume(Type.MINUS, "[header] Expecting '-', found '" + peek().lexeme + "' @line " + peek().line);
-        Literal right = new Literal(next());
-        consume(Type.RPAREN, "[header] Expecting ')', found '" + peek().lexeme + "' @line " + peek().line);
-        RangeExpr re = new RangeExpr(left, right);
+        Value key = new Value(next());
         Sequence<Line> se = new Sequence<>();
         while (match(Type.ID))
             se.append(lines());
-        return new Header(ids, re, se);
+        return new Header(key, se);
     }
     
     public Line lines() {

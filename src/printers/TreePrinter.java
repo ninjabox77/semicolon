@@ -4,8 +4,6 @@ import ast.AST;
 import ast.Compilation;
 import ast.Header;
 import ast.Line;
-import ast.Literal;
-import ast.RangeExpr;
 import ast.Value;
 import ast.Sequence;
 import ast.Visitor;
@@ -51,14 +49,6 @@ public class TreePrinter extends Visitor<AST> {
         return null;
     }
     
-    public AST visitRangeExpr(RangeExpr re) {
-        System.out.println(indent(re.line) + "Range: " + re);
-        indent += 2;
-        super.visitRangeExpr(re);
-        indent -= 2;
-        return null;
-    }
-    
     public AST visitHeader(Header h) {
         System.out.println(indent(h.line) + "Header: ");
         indent += 2;
@@ -71,14 +61,6 @@ public class TreePrinter extends Visitor<AST> {
         System.out.println(indent(li.line) + "Line: ");
         indent += 2;
         super.visitLine(li);
-        indent -= 2;
-        return null;
-    }
-    
-    public AST visitLiteral(Literal li) {
-        System.out.println(indent(li.line) + "Literal: " + li);
-        indent += 2;
-        super.visitLiteral(li);
         indent -= 2;
         return null;
     }

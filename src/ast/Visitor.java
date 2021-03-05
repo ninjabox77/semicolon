@@ -9,14 +9,6 @@ public abstract class Visitor<T extends Object> {
     public T visitLine(Line li) {
         return li.visitChildren(this);
     }
-    
-    public T visitLiteral(Literal li) {
-        return null;
-    }
-    
-    public T visitRangeExpr(RangeExpr re) {
-        return re.visitChildren(this);
-    }
 
     public T visitValue(Value val) {
         return null;
