@@ -1,16 +1,14 @@
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 import ast.*;
-import parser.Parr;
+import parser.Parser;
 import printers.TreePrinter;
 import scanner.Lexer;
 import utilities.Log;
@@ -25,36 +23,40 @@ public class Semicolon {
     // TODO:
     public static void writeToFile(Compilation c, List<String> lines) {
         Log.log(c, "Writing to file... ");
-        Writer writer = null;
         try {
-            String outFile = new File("").getAbsolutePath() + File.separator + OUTFILE + ".txt";
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), "utf-8"));
-            for (String li : lines)
-                writer.write(li + "\n");
-            writer.close();
+            String outFile = new File("").getAbsolutePath() + 
+                    File.separator + OUTFILE + ".txt";
+            FileWriter file = new FileWriter(outFile);
+            BufferedWriter bw = new BufferedWriter(file);
+            // write lines to output file
+            for (String li : lines) {
+                bw.write(li);
+                bw.newLine();
+            }
+            bw.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.err.println(e);
         }
     }
     
     public static void main(String[] args) {
         String src = "/Users/oswaldocisneros/eclipse-workspace/Semicolon/input/test";
-        byte[] bytes = null;
         try {
-            bytes = Files.readAllBytes(Paths.get(src));
+            byte[] bytes = Files.readAllBytes(Paths.get(src));
             src = new String(bytes, Charset.defaultCharset());
             Lexer lex = new Lexer(src);
             List<Token> tokens = lex.scanTokens();
 //            for (Token t : tokens)
 //                System.out.println(t);
-            Parr parser = new Parr(tokens);
+            Parser parser = new Parser(tokens);
             Compilation c = parser.file();
 //            c.visit(new TreePrinter());
-            FileBuilder fb = new FileBuilder();
-            c.visit(fb);
-            List<String> lines = fb.lines();
+            FileVistor fv = new FileVistor();
+            c.visit(fv);
+            List<String> lines = fv.lines();
             writeToFile(c, lines);
         } catch (IOException ex) {
+            System.err.println(ex);
         }
     }
 }

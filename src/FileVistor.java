@@ -4,17 +4,17 @@ import java.util.List;
 import ast.*;
 import utilities.Log;
 
-public class FileBuilder extends Visitor<String> {
+public class FileVistor extends Visitor<String> {
     
-    List<String> list = new ArrayList<>();
+    List<String> lines = new ArrayList<>();
     
     private static final String COMMENT = "COMMENT";
     private static final String KEY = "KEY";
     private static final String VALUE = "VALUE";
     
-    public FileBuilder() {
+    public FileVistor() {
         Log.logHeader("========================================");
-        Log.logHeader("*             W R I T E R              *");
+        Log.logHeader("*       F I L E   V I S I T O R        *");
         Log.logHeader("========================================");
     }
     
@@ -26,7 +26,7 @@ public class FileBuilder extends Visitor<String> {
     
     public String visitHeader(Header h) {
         Log.log(h, "Visiting a Header");
-        list.add(COMMENT + " = " + h.comment().visit(this));
+        lines.add(COMMENT + " = " + h.comment().visit(this));
         for (Line li : h.lines())
             li.visit(this);
         return null;
@@ -34,9 +34,9 @@ public class FileBuilder extends Visitor<String> {
     
     public String visitLine(Line li) {
         Log.log(li, "Visiting a Line");
-        list.add(KEY + " = " + li.key().visit(this));
+        lines.add(KEY + " = " + li.key().visit(this));
         for (Value val : li.lines())
-            list.add(VALUE + " = " + val.visit(this));
+            lines.add(VALUE + " = " + val.visit(this));
         return null;
     }
 
@@ -55,6 +55,6 @@ public class FileBuilder extends Visitor<String> {
     }
     
     public List<String> lines() {
-        return list;
+        return lines;
     }
 }

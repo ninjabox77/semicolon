@@ -4,12 +4,12 @@ import java.util.List;
 
 import ast.*;
 
-public class Parr {
+public class Parser {
     
     private final List<Token> tokens;
     private int current = 0;
 
-    public Parr(List<Token> tokens) {
+    public Parser(List<Token> tokens) {
         this.tokens = tokens;
     }
 
